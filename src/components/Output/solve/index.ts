@@ -1,10 +1,12 @@
-import { fcfs } from './fcfs';
-import { sjf } from './sjf';
-import { srtf } from './srtf';
-import { rr } from './rr';
-import { npp } from './npp';
-import { pp } from './pp';
-import { AlgoType } from '../../Input/AlgoSelect';
+import { fcfs } from "./fcfs";
+import { sjf } from "./sjf";
+import { srtf } from "./srtf";
+import { rr } from "./rr";
+import { npp } from "./npp";
+import { pp } from "./pp";
+import { ljf } from "./ljf";
+import { hrrn } from "./hrrn";
+import { AlgoType } from "../../Input/AlgoSelect";
 
 export type ganttChartInfoType = {
   job: string;
@@ -29,18 +31,22 @@ export const solve = (
   priorities: number[]
 ) => {
   switch (algo) {
-    case 'FCFS':
+    case "FCFS":
       return fcfs(arrivalTime, burstTime);
-    case 'SJF':
+    case "SJF":
       return sjf(arrivalTime, burstTime);
-    case 'SRTF':
+    case "LJF":
+      return ljf(arrivalTime, burstTime);
+    case "SRTF":
       return srtf(arrivalTime, burstTime);
-    case 'RR':
+    case "RR":
       return rr(arrivalTime, burstTime, timeQuantum);
-    case 'NPP':
+    case "NPP":
       return npp(arrivalTime, burstTime, priorities);
-    case 'PP':
+    case "PP":
       return pp(arrivalTime, burstTime, priorities);
+    case "HRRN":
+      return hrrn(arrivalTime, burstTime);
     default:
       break;
   }

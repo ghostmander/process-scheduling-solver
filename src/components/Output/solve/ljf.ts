@@ -1,6 +1,6 @@
-import { ganttChartInfoType } from "./";
+import { ganttChartInfoType } from ".";
 
-export const sjf = (arrivalTime: number[], burstTime: number[]) => {
+export const ljf = (arrivalTime: number[], burstTime: number[]) => {
   const processesInfo = arrivalTime
     .map((item, index) => {
       return {
@@ -12,13 +12,13 @@ export const sjf = (arrivalTime: number[], burstTime: number[]) => {
     .sort((obj1, obj2) => {
       if (obj1.at > obj2.at) return 1;
       if (obj1.at < obj2.at) return -1;
-      if (obj1.bt > obj2.bt) return 1;
-      if (obj1.bt < obj2.bt) return -1;
+      if (obj1.bt < obj2.bt) return 1;
+      if (obj1.bt > obj2.bt) return -1;
       return 0;
     });
 
-  let finishTime: number[] = [];
-  let ganttChartInfo: ganttChartInfoType = [];
+  let finishTime = [];
+  let ganttChartInfo = [];
 
   const solvedProcessesInfo = [];
   const readyQueue = [];
@@ -69,8 +69,8 @@ export const sjf = (arrivalTime: number[], burstTime: number[]) => {
       }
 
       const rqSortedByBT = [...readyQueue].sort((a, b) => {
-        if (a.bt > b.bt) return 1;
-        if (a.bt < b.bt) return -1;
+        if (a.bt < b.bt) return 1;
+        if (a.bt > b.bt) return -1;
         if (a.at > b.at) return 1;
         if (a.at < b.at) return -1;
         return 0;

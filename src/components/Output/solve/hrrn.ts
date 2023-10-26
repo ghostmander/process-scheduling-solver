@@ -1,36 +1,24 @@
-import { solvedProcessesInfoType, ganttChartInfoType } from './';
+import { ganttChartInfoType } from ".";
 
-export const pp = (
-  arrivalTime: number[],
-  burstTime: number[],
-  priorities: number[]
-) => {
+export const hrrn = (arrivalTime: number[], burstTime: number[]) => {
   const processesInfo = arrivalTime
     .map((item, index) => {
       return {
         job: `P${index + 1}`,
         at: item,
         bt: burstTime[index],
-        priority: priorities[index],
       };
     })
-    .sort((process1, process2) => {
-      if (process1.at > process2.at) return 1;
-      if (process1.at < process2.at) return -1;
-      if (process1.priority > process2.priority) return 1;
-      if (process1.priority < process2.priority) return -1;
+    .sort((obj1, obj2) => {
+      if (obj1.at > obj2.at) return 1;
+      if (obj1.at < obj2.at) return -1;
       return 0;
     });
 
-  const solvedProcessesInfo: solvedProcessesInfoType = [];
+  const solvedProcessesInfo = [];
   const ganttChartInfo: ganttChartInfoType = [];
 
-  const readyQueue: {
-    job: string;
-    at: number;
-    bt: number;
-    priority: number;
-  }[] = [];
+  const readyQueue = [];
   let currentTime = processesInfo[0].at;
   const unfinishedJobs = [...processesInfo];
 
@@ -53,9 +41,14 @@ export const pp = (
     }
 
     readyQueue.sort((a, b) => {
-      // Equal-priority processes are scheduled in FCFS order.
-      if (a.priority > b.priority) return 1;
-      if (a.priority < b.priority) return -1;
+      let curr: number = currentTime;
+      let wtA = curr - a.at;
+      let wtB = curr - b.at;
+      let rrA = (wtA + a.bt) / a.bt;
+      let rrB = (wtB + b.bt) / b.bt;
+      // Sort by response ratio
+      if (rrA > rrB) return -1;
+      if (rrA < rrB) return 1;
       return 0;
     });
 
@@ -74,6 +67,7 @@ export const pp = (
         unfinishedJobs.includes(p)
       );
     });
+
     let gotInterruption = false;
     processATLessThanBT.some((p) => {
       if (prevIdle) {
@@ -86,7 +80,7 @@ export const pp = (
         readyQueue.push(p);
       }
 
-      if (p.priority < processToExecute.priority) {
+      if (p.bt < remainingTime[processToExecute.job] - amount) {
         remainingTime[processToExecute.job] -= amount;
         readyQueue.push(p);
         const prevCurrentTime = currentTime;
@@ -96,6 +90,7 @@ export const pp = (
           start: prevCurrentTime,
           stop: currentTime,
         });
+
         gotInterruption = true;
         return true;
       }
@@ -173,11 +168,11 @@ export const pp = (
   }
 
   // Sort the processes by job name within arrival time
-  solvedProcessesInfo.sort((process1, process2) => {
-    if (process1.at > process2.at) return 1;
-    if (process1.at < process2.at) return -1;
-    if (process1.job > process2.job) return 1;
-    if (process1.job < process2.job) return -1;
+  solvedProcessesInfo.sort((obj1, obj2) => {
+    if (obj1.at > obj2.at) return 1;
+    if (obj1.at < obj2.at) return -1;
+    if (obj1.job > obj2.job) return 1;
+    if (obj1.job < obj2.job) return -1;
     return 0;
   });
 

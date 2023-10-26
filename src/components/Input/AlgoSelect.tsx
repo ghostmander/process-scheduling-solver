@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import Select from 'react-select';
-import styled from 'styled-components';
+import React, { Dispatch, SetStateAction } from "react";
+import Select from "react-select";
+import styled from "styled-components";
 
 /*
   FCFS - First Come First Serve
@@ -10,38 +10,54 @@ import styled from 'styled-components';
   NPP - Non-preemptive Priority
   PP - Preemptive Priority
 */
-export type AlgoType = 'FCFS' | 'SJF' | 'SRTF' | 'RR' | 'NPP' | 'PP';
+export type AlgoType =
+  | "FCFS"
+  | "SJF"
+  | "SRTF"
+  | "RR"
+  | "NPP"
+  | "PP"
+  | "LJF"
+  | "HRRN";
 export type OptionType = {
   value: AlgoType;
   label: string;
 };
 
 export const defaultOption: OptionType = {
-  value: 'FCFS',
-  label: 'First Come First Serve, FCFS',
+  value: "FCFS",
+  label: "First Come First Serve, FCFS",
 };
 
 const options: OptionType[] = [
   defaultOption,
   {
-    value: 'SJF',
-    label: 'Shortest Job First, SJF (non-preemptive)',
+    value: "SJF",
+    label: "Shortest Job First, SJF (non-preemptive)",
   },
   {
-    value: 'SRTF',
-    label: 'Shortest Remaining Time First, SRTF',
+    value: "LJF",
+    label: "Longest Job First, LJF (non-preemptive)",
   },
   {
-    value: 'RR',
-    label: 'Round-Robin, RR',
+    value: "SRTF",
+    label: "Shortest Remaining Time First, SRTF",
   },
   {
-    value: 'NPP',
-    label: 'Priority (non-preemptive)',
+    value: "RR",
+    label: "Round-Robin, RR",
   },
   {
-    value: 'PP',
-    label: 'Priority (preemptive)',
+    value: "NPP",
+    label: "Priority (non-preemptive)",
+  },
+  {
+    value: "PP",
+    label: "Priority (preemptive)",
+  },
+  {
+    value: "HRRN",
+    label: "Highest Response Ratio Next, HRRN",
   },
 ];
 

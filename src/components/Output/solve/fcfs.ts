@@ -4,7 +4,7 @@ export const fcfs = (arrivalTime: number[], burstTime: number[]) => {
   const processesInfo = arrivalTime
     .map((item, index) => {
       return {
-        job: (index + 10).toString(36).toUpperCase(),
+        job: `P${index+1}`,
         at: item,
         bt: burstTime[index],
       };
